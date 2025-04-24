@@ -40,3 +40,4 @@
 2. Qdrant Python SDK - https://python-client.qdrant.tech/
 3. MotorIO - https://motor.readthedocs.io/en/stable/
 4. SQLAlchemy for PostgreSQL - https://docs.sqlalchemy.org/en/20/dialects/postgresql.html
+5. Agno MCP Toolkit - https://docs.agno.com/tools/mcp 
