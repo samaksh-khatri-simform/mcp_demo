@@ -18,28 +18,11 @@ from mcp.shared.context import RequestContext
 from llm import model
 
 
-async def sampling_callback(
-    context: RequestContext["ClientSession", Any],
-    params: types.CreateMessageRequestParams,
-) -> types.CreateMessageResult | types.ErrorData:
-    messages = params.messages
-    system_prompt = params.systemPrompt
-    model.system_prompt = system_prompt
-    response = await model.ainvoke(messages=messages)
-    return types.CreateMessageResult(
-        role=response.choices[0].message.role,
-        content=response.choices[0].message.content,
-        model=model.id,
-    )
-
-
 async def main(message):
     # Create an MCP client connecting to the local server
     # By default, MCP server runs on port 8000
     async with sse_client("http://localhost:8000/sse", timeout=120) as (read, write):
-        async with ClientSession(
-            read_stream=read, write_stream=write, sampling_callback=sampling_callback
-        ) as session:
+        async with ClientSession(read_stream=read, write_stream=write) as session:
             await session.initialize()
             async with MCPTools(session=session) as mcp_tool:
                 agent = Agent(
